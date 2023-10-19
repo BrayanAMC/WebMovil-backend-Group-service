@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
+import { AddMemberDto } from './dto/add-member-dto'
 import { InjectRepository } from '@nestjs/typeorm';
-import { Team, CreateTeamResponde } from './entities/team.entity'
+import { Team, CreateTeamResponde, AddMemberResponde } from './entities/team.entity'
 import { Repository } from 'typeorm';
 
 
@@ -32,6 +33,30 @@ export class TeamsService {
     return { success: true, message: "Team created successfully", idTeam: newTeam.id };
 
   }
+
+  async addMember(addMemberDto: AddMemberDto): Promise<AddMemberResponde> {
+    const idMember = addMemberDto.idMember;
+    const nameTeam = addMemberDto.nameTeam;
+    const idCreator = addMemberDto.idCreator;
+    //verificar que exista el team y que el creador del team sea idCreator
+    const team = await this.teamRepository.findOne({
+      where: { name: nameTeam, idCreator }
+    })
+    if (!team) {
+      return { success: false, message: "team does not exist" };
+    }
+
+    //verificar que el nuevo miembro no exista como miembro en el team que se quiere agregar
+    if (team.idMembers.includes(idMember) || idMember == team.idCreator) {//se verifica que no se ingrese como miembro al creador del team
+      return { success: false, message: "member already exists in team" };
+    }
+    //agregar el nuevo miembro al team
+    team.idMembers.push(idMember)
+    await this.teamRepository.save(team);
+    return { success: true, message: "new member was added into team", idTeam: team.id };
+  }
+
+
 
   findAll() {
     return `This action returns all teams`;

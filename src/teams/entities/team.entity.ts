@@ -33,3 +33,14 @@ export class CreateTeamResponde {
 
     idTeam?: number;
 }
+
+export class AddMemberResponde {
+
+    success: boolean;
+
+
+    message: string;
+
+
+    idTeam?: number;
+}

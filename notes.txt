@@ -1,3 +1,9 @@
 como crear un team:
-    i) createTeam --> repo team
-    ii) 
+    createTeam --> repo team
+    addTeamToUser --> users repo
+
+
+agregar usuarios a equipo:
+    validateUser  --> users repo
+    addMember --> teams repo
+    addTeamToUser --> users repo    

@@ -2,7 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
-
+import { AddMemberDto } from './dto/add-member-dto';
+import { AddMemberResponde } from './entities/team.entity'
 @Controller('teams')
 export class TeamsController {
   constructor(private readonly teamsService: TeamsService) {}
@@ -16,6 +17,12 @@ export class TeamsController {
     }
     
   }
+
+  @Post('addMember')
+  addMember(@Body() addMemberDto: AddMemberDto): Promise<AddMemberResponde>{
+    return this.teamsService.addMember(addMemberDto)
+  }
+
 
   @Get()
   findAll() {
