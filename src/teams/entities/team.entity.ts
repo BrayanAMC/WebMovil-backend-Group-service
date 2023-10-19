@@ -1,10 +1,11 @@
 
-import { Entity, Column, PrimaryGeneratedColumn , Unique} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Unique, Index } from 'typeorm';
 
+@Index(["name", "idCreator"], { unique: true })
 @Entity()
 export class Team {
 
-    
+
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -14,7 +15,7 @@ export class Team {
     @Column()
     description: string;
 
-    @Column('int', {array:true, default:[]})
+    @Column('int', { array: true, default: [] })
     idMembers: number[];
 
     @Column()
@@ -22,10 +23,13 @@ export class Team {
 }
 
 
-export class TeamResponde {
-    
+export class CreateTeamResponde {
+
     success: boolean;
-  
-    
+
+
     message: string;
-  }
+
+
+    idTeam?: number;
+}

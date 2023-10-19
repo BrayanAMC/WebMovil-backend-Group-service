@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Team, TeamResponde } from './entities/team.entity'
+import { Team, CreateTeamResponde } from './entities/team.entity'
 import { Repository } from 'typeorm';
 
 
@@ -13,19 +13,23 @@ export class TeamsService {
     @InjectRepository(Team) private teamRepository: Repository<Team>,
   ) { }
 
-  async create(createTeamDto: CreateTeamDto): Promise<TeamResponde> {
+  async create(createTeamDto: CreateTeamDto): Promise<CreateTeamResponde> {
     const name = createTeamDto.name;
+    const idCreator = createTeamDto.idCreator;
     const team = await this.teamRepository.findOne({
-      where: { name }
-    })   
-    
-    if(team){//the team already exists
+      where: { name, idCreator }
+    })
+
+    if (team) {//the team already exists
       return { success: false, message: 'Team already exists' };
     }
 
     //save team in database
-    this.teamRepository.save(team);
-    return { success: true, message: "Team created successfully"};
+    const newTeam = this.teamRepository.create(
+      createTeamDto,
+    )
+    await this.teamRepository.save(newTeam);
+    return { success: true, message: "Team created successfully", idTeam: newTeam.id };
 
   }
 

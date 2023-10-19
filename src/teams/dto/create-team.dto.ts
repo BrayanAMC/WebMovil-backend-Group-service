@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsEmail, IsString} from 'class-validator';
+import { IsNotEmpty, IsEmail, IsString, isNotEmpty} from 'class-validator';
+import internal from 'stream';
 
 export class CreateTeamDto {
     
@@ -8,6 +9,9 @@ export class CreateTeamDto {
 
     @IsString()
     description: string;
+
+    
+    idCreator: number;
 }
 
 

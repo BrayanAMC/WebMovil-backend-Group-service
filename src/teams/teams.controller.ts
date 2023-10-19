@@ -9,7 +9,12 @@ export class TeamsController {
 
   @Post('createTeam')
   create(@Body() createTeamDto: CreateTeamDto) {
-    return this.teamsService.create(createTeamDto);
+    try{
+      return this.teamsService.create(createTeamDto);
+    }catch(error){
+      return { success: false, message: "error creating team"};
+    }
+    
   }
 
   @Get()

@@ -1,0 +1,3 @@
+como crear un team:
+    i) createTeam --> repo team
+    ii) 
