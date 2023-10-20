@@ -5,6 +5,7 @@ import { AddMemberDto } from './dto/add-member-dto'
 import { InjectRepository } from '@nestjs/typeorm';
 import { Team, CreateTeamResponde, AddMemberResponde } from './entities/team.entity'
 import { Repository } from 'typeorm';
+import { findTeamsByIdInput } from './dto/input-team';
 
 @Injectable()
 export class TeamsService {
@@ -53,10 +54,17 @@ export class TeamsService {
     await this.teamRepository.save(team);
     return { success: true, message: "new member was added into team", idTeam: team.id };
   }
-  findAll(id: number): Promise<Team[]>{
-    return this.teamRepository.find({where: {id: id}});
+  async getTeams(id: number): Promise<Team[]>{
+    return this.teamRepository.find({where: {idCreator: id}});
   }
 
+  async findTeamsById(findTeamsById: findTeamsByIdInput): Promise<Team[]>{
+    const idCreator = findTeamsById.idCreator;
+    return this.teamRepository.find({
+      where: {idCreator}
+    })
+
+  }
   findOne(id: number) {
     return this.teamRepository.findOne({where:{id}});
   }

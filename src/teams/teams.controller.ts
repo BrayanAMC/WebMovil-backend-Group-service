@@ -3,7 +3,8 @@ import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { AddMemberDto } from './dto/add-member-dto';
-import { AddMemberResponde } from './entities/team.entity'
+import { AddMemberResponde, Team } from './entities/team.entity'
+import { findTeamsByIdInput } from './dto/input-team';
 @Controller('teams')
 export class TeamsController {
   constructor(private readonly teamsService: TeamsService) {}
@@ -22,9 +23,14 @@ export class TeamsController {
     return this.teamsService.addMember(addMemberDto)
   }
 
-  @Get('teams')
-  findAll(@Body() id: number) {
-    return this.teamsService.findAll(id);
+  @Get('get-teams')
+  getTeams(@Param('id') id: number): Promise<Team[]> {
+    return this.teamsService.getTeams(id);
+  }
+
+  @Post('findTeamsById')
+  findTeamsById(@Body() findTeamsById: findTeamsByIdInput) {
+    return this.teamsService.findTeamsById(findTeamsById);
   }
 
   @Get(':id')
