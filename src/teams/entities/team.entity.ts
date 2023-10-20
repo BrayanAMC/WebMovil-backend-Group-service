@@ -4,8 +4,6 @@ import { Entity, Column, PrimaryGeneratedColumn, Unique, Index } from 'typeorm';
 @Index(["name", "idCreator"], { unique: true })
 @Entity()
 export class Team {
-
-
     @PrimaryGeneratedColumn()
     id: number;
 

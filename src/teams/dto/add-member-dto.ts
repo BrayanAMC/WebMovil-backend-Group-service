@@ -14,4 +14,3 @@ export class AddMemberDto {
     idCreator: number;//para validar que pueda ingresar al nuevo miembro
                      //ya que no deberia agregar miebros a teams de otros usuarios.
 }
-
