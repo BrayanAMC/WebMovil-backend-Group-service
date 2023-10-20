@@ -24,7 +24,7 @@ export class TeamsController {
   }
 
 
-  @Get()
+  @Get('teams')
   findAll() {
     return this.teamsService.findAll();
   }
@@ -34,12 +34,12 @@ export class TeamsController {
     return this.teamsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
-    return this.teamsService.update(+id, updateTeamDto);
+  @Patch('update-team')
+  update(@Body() input: UpdateTeamDto) {
+    return this.teamsService.updateTeam(input.id, input.name, input.description);
   }
 
-  @Delete(':id')
+  @Delete('remove-team')
   remove(@Param('id') id: string) {
     return this.teamsService.remove(+id);
   }

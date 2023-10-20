@@ -46,7 +46,6 @@ export class TeamsService {
       return { success: false, message: "team does not exist" };
     }
 
-    //verificar que el nuevo miembro no exista como miembro en el team que se quiere agregar
     if (team.idMembers.includes(idMember) || idMember == team.idCreator) {//se verifica que no se ingrese como miembro al creador del team
       return { success: false, message: "member already exists in team" };
     }
@@ -56,21 +55,41 @@ export class TeamsService {
     return { success: true, message: "new member was added into team", idTeam: team.id };
   }
 
-
-
-  findAll() {
-    return `This action returns all teams`;
+  findAll(): Promise<Team[]>{
+    return this.teamRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} team`;
+    return this.teamRepository.findOne({where:{id}});
+  }
+  async updateTeam(
+    id: number,
+    name: string,
+    description: string,
+  ): Promise<boolean> {
+    try {
+      await this.teamRepository.update(
+        {
+          id: id,
+        },
+        {
+          name: name,
+          description: description,
+        },
+      );
+      return true;
+    } catch (err) {
+      return false;
+    }
   }
 
-  update(id: number, updateTeamDto: UpdateTeamDto) {
-    return `This action updates a #${id} team`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} team`;
+  async remove(id: number): Promise<boolean> {
+    const team = await this.teamRepository.findOne({where: {id}})
+    if(team){
+      await this.teamRepository.remove(team)
+      return true
+    }
+    return false
   }
 }
