@@ -86,7 +86,9 @@ export class TeamsService {
 
   async remove(id: number): Promise<boolean> {
     const team = await this.teamRepository.findOne({where: {id}})
+    console.log(team)
     if(team){
+      console.log("antes de eliminar team")
       await this.teamRepository.remove(team)
       return true
     }

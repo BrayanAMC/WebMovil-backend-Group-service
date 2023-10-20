@@ -40,7 +40,12 @@ export class TeamsController {
   }
 
   @Delete('remove-team')
-  remove(@Param('id') id: string) {
-    return this.teamsService.remove(+id);
+  remove(@Body('id') id: number) {
+    try{
+      console.log(id)
+      return this.teamsService.remove(id);
+    }catch(error){
+      return "an error has ocurred";
+    }
   }
 }
