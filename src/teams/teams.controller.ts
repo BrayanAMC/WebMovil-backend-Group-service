@@ -15,7 +15,6 @@ export class TeamsController {
     }catch(error){
       return { success: false, message: "error creating team"};
     }
-    
   }
 
   @Post('addMember')
@@ -23,10 +22,9 @@ export class TeamsController {
     return this.teamsService.addMember(addMemberDto)
   }
 
-
   @Get('teams')
-  findAll() {
-    return this.teamsService.findAll();
+  findAll(@Body() id: number) {
+    return this.teamsService.findAll(id);
   }
 
   @Get(':id')
@@ -40,7 +38,7 @@ export class TeamsController {
   }
 
   @Delete('remove-team')
-  remove(@Param('id') id: string) {
-    return this.teamsService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.teamsService.remove(id);
   }
 }

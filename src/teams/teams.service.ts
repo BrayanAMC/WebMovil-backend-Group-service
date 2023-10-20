@@ -6,7 +6,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Team, CreateTeamResponde, AddMemberResponde } from './entities/team.entity'
 import { Repository } from 'typeorm';
 
-
 @Injectable()
 export class TeamsService {
 
@@ -54,9 +53,8 @@ export class TeamsService {
     await this.teamRepository.save(team);
     return { success: true, message: "new member was added into team", idTeam: team.id };
   }
-
-  findAll(): Promise<Team[]>{
-    return this.teamRepository.find();
+  findAll(id: number): Promise<Team[]>{
+    return this.teamRepository.find({where: {id: id}});
   }
 
   findOne(id: number) {
