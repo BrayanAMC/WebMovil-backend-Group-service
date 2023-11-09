@@ -44,7 +44,9 @@ export class TeamsController {
   }
 
   @Delete('remove-team')
+
   remove(@Param('id') id: number) {
     return this.teamsService.remove(id);
+
   }
 }
