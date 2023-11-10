@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
+import { removeTeamDto } from './dto/remove-team.dto';
 import { AddMemberDto } from './dto/add-member-dto';
 import { AddMemberResponde, Team } from './entities/team.entity'
 import { findTeamsByIdInput } from './dto/input-team';
@@ -43,9 +44,9 @@ export class TeamsController {
     return this.teamsService.updateTeam(input.id, input.name, input.description);
   }
 
-  @Delete('remove-team')
-
+  @Post('remove-team/:id')
   remove(@Param('id') id: number) {
+    console.log("id en remove-team:", id);
     return this.teamsService.remove(id);
 
   }
