@@ -3,7 +3,7 @@ import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { AddMemberDto } from './dto/add-member-dto'
 import { InjectRepository } from '@nestjs/typeorm';
-import { Team, CreateTeamResponde, AddMemberResponde } from './entities/team.entity'
+import { Team, CreateTeamResponse, AddMemberResponde } from './entities/team.entity'
 import { Repository } from 'typeorm';
 import { findTeamsByIdInput } from './dto/input-team';
 
@@ -14,7 +14,7 @@ export class TeamsService {
     @InjectRepository(Team) private teamRepository: Repository<Team>,
   ) { }
 
-  async create(createTeamDto: CreateTeamDto): Promise<CreateTeamResponde> {
+  async create(createTeamDto: CreateTeamDto): Promise<CreateTeamResponse> {
     const name = createTeamDto.name;
     const idCreator = createTeamDto.idCreator;
     const team = await this.teamRepository.findOne({

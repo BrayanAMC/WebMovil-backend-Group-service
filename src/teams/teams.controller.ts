@@ -4,18 +4,18 @@ import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { removeTeamDto } from './dto/remove-team.dto';
 import { AddMemberDto } from './dto/add-member-dto';
-import { AddMemberResponde, Team } from './entities/team.entity'
+import { AddMemberResponde, CreateTeamResponse, Team } from './entities/team.entity'
 import { findTeamsByIdInput } from './dto/input-team';
 @Controller('teams')
 export class TeamsController {
   constructor(private readonly teamsService: TeamsService) {}
 
   @Post('createTeam')
-  create(@Body() createTeamDto: CreateTeamDto) {
+  create(@Body() createTeamDto: CreateTeamDto):Promise<CreateTeamResponse> {
     try{
       return this.teamsService.create(createTeamDto);
     }catch(error){
-      return { success: false, message: "error creating team"};
+      return Promise.resolve({ success: false, message: "Error creating team" });
     }
   }
 

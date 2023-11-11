@@ -21,7 +21,7 @@ export class Team {
 }
 
 
-export class CreateTeamResponde {
+export class CreateTeamResponse {
 
     success: boolean;
 
