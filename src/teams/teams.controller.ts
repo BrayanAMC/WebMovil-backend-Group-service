@@ -4,8 +4,12 @@ import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { removeTeamDto } from './dto/remove-team.dto';
 import { AddMemberDto } from './dto/add-member-dto';
-import { AddMemberResponde, CreateTeamResponse, Team } from './entities/team.entity'
+import { AddMemberResponse, CreateTeamResponse, Team } from './entities/team.entity'
 import { findTeamsByIdInput } from './dto/input-team';
+import * as dotenv from 'dotenv';
+dotenv.config()
+import axios from "axios";
+
 @Controller('teams')
 export class TeamsController {
   constructor(private readonly teamsService: TeamsService) {}
@@ -20,8 +24,22 @@ export class TeamsController {
   }
 
   @Post('addMember')
-  addMember(@Body() addMemberDto: AddMemberDto): Promise<AddMemberResponde>{
-    return this.teamsService.addMember(addMemberDto)
+  async addMember(@Body() addMemberDto: AddMemberDto): Promise<AddMemberResponse>{
+
+    const emailNewMember = addMemberDto.emailNewMember;
+    const idTeam = addMemberDto.idTeam;
+    const userResponse = await axios.post(`${process.env.ENDPOINT_MS_AUTH}/get-user`, {
+      email: emailNewMember,
+      });
+      const idNewMember = userResponse.data.id;
+      if(userResponse.data && userResponse.data.email === emailNewMember){
+          console.log("entro al if usuario es valido");        
+          //agregar el nuevo miembro al team
+          return this.teamsService.addMember(idTeam,idNewMember);
+      }else{
+          console.log("entro al else");
+          return { success: false, message: "error in addMember" };
+      }
   }
 
   @Get('get-teams')
