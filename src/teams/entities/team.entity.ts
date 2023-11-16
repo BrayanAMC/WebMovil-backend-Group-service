@@ -32,7 +32,7 @@ export class CreateTeamResponse {
     idTeam?: number;
 }
 
-export class AddMemberResponde {
+export class AddMemberResponse {
 
     success: boolean;
 
