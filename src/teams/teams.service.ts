@@ -63,6 +63,14 @@ export class TeamsService {
     })
 
   }
+  async findTeamsByMemberId(idMember: number): Promise<Team[]> {
+    const teams = await this.teamRepository
+      .createQueryBuilder('team')
+      .where(':idMember = ANY(team.idMembers)', { idMember })
+      .getMany();
+
+    return teams;
+  }
   async findOne(id: number) {
     try {
       const team = await this.teamRepository.findOne({ where: { id } });

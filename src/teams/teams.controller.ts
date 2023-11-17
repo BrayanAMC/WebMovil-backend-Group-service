@@ -52,6 +52,12 @@ export class TeamsController {
     return this.teamsService.findTeamsById(findTeamsById);
   }
 
+  @Post('findTeamsByMemberId')
+  findTeamsByMemberId(@Body() findTeamsById: findTeamsByIdInput) {
+    const idMember = findTeamsById.idCreator;
+    return this.teamsService.findTeamsByMemberId(idMember);
+  }
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.teamsService.findOne(+id);
