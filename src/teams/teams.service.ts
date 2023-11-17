@@ -50,8 +50,24 @@ export class TeamsService {
     return { success: true, message: "new member was added into team", idTeam: team.id };
   }
 
+  async getTeamByName(name: string): Promise<Team> {
+    
+    const team =  await this.teamRepository.findOne({ where: { name } });
+    
+    return team;
+  }
+
   async getTeams(id: number): Promise<Team[]>{
     return this.teamRepository.find({where: {idCreator: id}});
+  }
+
+  async findTeamsByMemberId(idMember: number): Promise<Team[]> {
+    const teams = await this.teamRepository
+      .createQueryBuilder('team')
+      .where(':idMember = ANY(team.idMembers)', { idMember })
+      .getMany();
+
+    return teams;
   }
 
   async findTeamsById(findTeamsById: findTeamsByIdInput): Promise<Team[]>{
@@ -61,8 +77,15 @@ export class TeamsService {
     })
 
   }
-  findOne(id: number) {
-    return this.teamRepository.findOne({where:{id}});
+
+  async findOne(id: number) {
+    
+    //TODO: ir con axios a el repo de los usuarios
+
+    const team = await this.teamRepository.findOne({
+      where: { id }
+    });
+    
   }
   async updateTeam(
     id: number,
