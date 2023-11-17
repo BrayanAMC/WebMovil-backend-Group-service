@@ -27,7 +27,7 @@ export class CreateProjectResponse {
     message: string;
 
 
-    idTeam?: number;
+    idProject?: number;
 }
 
 export class AddTeamResponse {

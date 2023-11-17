@@ -138,4 +138,11 @@ export class TeamsService {
     }
     return false
   }
+
+  async getTeamByName(name: string): Promise<Team> {
+
+    const team =  await this.teamRepository.findOne({ where: { name } });
+
+    return team;
+  }
 }
