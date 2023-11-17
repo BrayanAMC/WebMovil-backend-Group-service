@@ -1,6 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import { Team } from 'src/teams/entities/team.entity';
+import { Project } from 'src/projects/entities/project.entity';
 
 dotenv.config()
 
@@ -11,7 +12,7 @@ const config: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: [Team], 
+  entities: [Team, Project], 
   //migrations: [__dirname + '/migrations/*{.ts,.js}'],
   //migrations: ["dist/migrations/**/*{.js,.ts}"],
   synchronize: true, 

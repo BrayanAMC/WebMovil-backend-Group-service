@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
-import { removeMemberDto, removeTeamDto } from './dto/remove-team.dto';
+import { removeTeamDto } from './dto/remove-team.dto';
 import { AddMemberDto } from './dto/add-member-dto';
 import { AddMemberResponse, CreateTeamResponse, Team } from './entities/team.entity'
 import { findTeamsByIdInput } from './dto/input-team';
@@ -57,9 +57,11 @@ export class TeamsController {
     const idMember = findTeamsById.idCreator;
     return this.teamsService.findTeamsByMemberId(idMember);
   }
-  
+
   @Get(':id')
   findOne(@Param('id') id: string) {
+    console.log("id en backend", id)
+    
     return this.teamsService.findOne(+id);
   }
 
@@ -73,10 +75,5 @@ export class TeamsController {
     console.log("id en remove-team:", id);
     return this.teamsService.remove(id);
 
-  }
-
-  @Post('deleteMember')
-  deleteMember(@Body() removeTeamDto: removeMemberDto) {
-    return this.teamsService.deleteMember(removeTeamDto.idTeam, removeTeamDto.idMember);
   }
 }
