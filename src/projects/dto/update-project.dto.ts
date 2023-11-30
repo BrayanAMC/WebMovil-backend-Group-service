@@ -1,4 +1,17 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateProjectDto } from './create-project.dto';
+import { IsNotEmpty, IsEmail, IsString, isNotEmpty} from 'class-validator';
+export class UpdateProjectDto{
+    @IsNotEmpty()
+    id: number; 
 
-export class UpdateProjectDto extends PartialType(CreateProjectDto) {}
+    @IsString()
+    name: string;
+
+    @IsNotEmpty()
+    description: string;
+}
+
+export class removeTeamDto{
+    idProject: number
+    idTeam: number
+}
+

@@ -3,9 +3,7 @@ import internal from 'stream';
 
 export class findTeamsByIdInput {
 
-
     @IsNotEmpty()
     idCreator: number;
-
 
 }

@@ -8,7 +8,7 @@ import { AddTeamDto } from './dto/add-team-dto';
 import axios from "axios";
 import { TeamsService } from 'src/teams/teams.service';
 import { Team } from 'src/teams/entities/team.entity';
-
+import { removeTeamDto } from './dto/update-project.dto';
 @Controller('projects')
 export class ProjectsController {
   constructor(
@@ -53,12 +53,7 @@ export class ProjectsController {
   @Post('findProjectsByMemberId')
   findProjectsByMemberId(@Body() findProjectsById: findProjectByIdInput) {
     const idMember = findProjectsById.idCreator;
-    return this.projectsService.findProjectsByMemberId(idMember);
-  }
-
-  @Get()
-  findAll() {
-    return this.projectsService.findAll();
+    return this.projectsService.findProjectsByTeamId(idMember);
   }
 
   @Get(':id')
@@ -66,17 +61,21 @@ export class ProjectsController {
     return this.projectsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
-    return this.projectsService.update(+id, updateProjectDto);
+  @Patch('update-project')
+  update(@Body() input: UpdateProjectDto) {
+    return this.projectsService.updateProject(input.id, input.name, input.description);
   }
 
-  
 
   @Post('remove-project/:id')
   remove(@Param('id') id: number) {
     
     return this.projectsService.remove(id);
 
+  }
+  
+  @Post('deleteTeam')
+  deleteTeam(@Body() input: removeTeamDto) {
+    return this.projectsService.deleteTeam(input.idProject, input.idTeam);
   }
 }
