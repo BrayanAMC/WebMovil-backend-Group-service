@@ -30,11 +30,18 @@ export class TasksController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(+id, updateTaskDto);
+    return this.tasksService.updateTask(+id, updateTaskDto);
   }
 
-  @Delete(':id')
+  /*@Delete(':id')
   remove(@Param('id') id: string) {
     return this.tasksService.remove(+id);
+  }*/
+
+  @Post('remove-task/:id')
+  remove(@Param('id') id: number) {
+    console.log("id en remove-task:", id);
+    return this.tasksService.remove(id);
+
   }
 }

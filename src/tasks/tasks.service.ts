@@ -44,11 +44,30 @@ export class TasksService {
     return `This action returns a #${id} task`;
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async updateTask(id: number, updateTaskDto: UpdateTaskDto) {
+    const taskToUpdate = await this.taskRepository.findOne({
+      where: { id }, // Condición de búsqueda por ID
+    });
+    if (!taskToUpdate) {
+      throw new Error(`No se encontró la tarea con el ID: ${id}`);
+    }
+   
+    Object.assign(taskToUpdate, updateTaskDto); // Actualizar los campos proporcionados en el DTO
+
+    return this.taskRepository.save(taskToUpdate);
   }
 
-  remove(id: number) {
+  /*remove(id: number) {
     return `This action removes a #${id} task`;
+  }*/
+  async remove(id: number): Promise<boolean> {
+    const task = await this.taskRepository.findOne({where: {id}})
+    console.log(task)
+    if(task){
+      console.log("antes de eliminar task")
+      await this.taskRepository.remove(task)
+      return true
+    }
+    return false
   }
 }
