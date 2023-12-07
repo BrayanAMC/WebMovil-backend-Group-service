@@ -21,6 +21,7 @@ export class TeamsService {
     const team = await this.teamRepository.findOne({
       where: { name, idCreator }
     })
+    
 
     if (team) {//the team already exists
       return { success: false, message: 'Team already exists' };

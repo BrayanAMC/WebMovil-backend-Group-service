@@ -2,27 +2,34 @@ import { Entity, Column, PrimaryGeneratedColumn, Unique, Index } from 'typeorm';
 
 @Index(["name", "idCreator"], { unique: true })
 @Entity()
-export class Project {
+export class Task {
     @PrimaryGeneratedColumn()
     id: number;
-
+    
     @Column()
     name: string;
-
+    
     @Column()
     description: string;
-
-    @Column('int', { array: true, default: [] })
-    idTeams: number[];
-
-    @Column('int', { array: true, default: [] })
-    idTasks: number[];
-
+    
     @Column()
     idCreator: number;
+    
+    @Column({default: null})
+    idResponsible: number;
+    
+    @Column({default: 'no status'})
+    status: string;
+    
+    @Column()
+    startDate: Date;
+    
+    @Column({default: null})
+    endDate: Date;
+
 }
 
-export class CreateProjectResponse {
+export class CreateTaskResponse {
 
     success: boolean;
 
@@ -30,16 +37,5 @@ export class CreateProjectResponse {
     message: string;
 
 
-    idProject?: number;
-}
-
-export class AddTeamResponse {
-
-    success: boolean;
-
-
-    message: string;
-
-
-    idTeam?: number;
+    idTask?: number;
 }
