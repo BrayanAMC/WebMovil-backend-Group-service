@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, Unique, Index } from 'typeorm';
 
-@Index(["name", "idCreator"], { unique: true })
+//@Index(["name", "idCreator"], { unique: true })
 @Entity()
 export class Task {
     @PrimaryGeneratedColumn()

@@ -19,7 +19,7 @@ export class TasksService {
     const name = createTaskDto.name;
     const idCreator = createTaskDto.idCreator;
     const task = await this.taskRepository.findOne({
-      where: { name, idCreator }
+      where: { name}
     })
 
     if (task) {//the task already exists
@@ -35,8 +35,9 @@ export class TasksService {
     return { success: true, message: "Task created successfully", idTask: newTask.id };
   }
 
-  findAll() {
-    return `This action returns all tasks`;
+  async findAll(): Promise<Task[]> {
+
+    return this.taskRepository.find();
   }
 
   findOne(id: number) {

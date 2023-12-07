@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { Task } from './entities/task.entity';
 
 @Controller('tasks')
 export class TasksController {
@@ -17,8 +18,8 @@ export class TasksController {
     
   }
 
-  @Get()
-  findAll() {
+  @Get('findAll')
+  findAll(): Promise<Task[]> {
     return this.tasksService.findAll();
   }
 
