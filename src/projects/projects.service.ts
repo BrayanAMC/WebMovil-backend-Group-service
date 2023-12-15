@@ -103,11 +103,10 @@ export class ProjectsService {
          
           
           const task = await this.taskRepository.findOne({ where: { id: idTask } });
-
-          console.log("objeto task:::", task);
           return task;
         }),
       );
+      
       
       return { project, teams, tasks };
     } catch (error) {
