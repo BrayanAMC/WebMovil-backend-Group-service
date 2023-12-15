@@ -47,6 +47,11 @@ export class TeamsController {
     return this.teamsService.getTeams(id);
   }
 
+  @Get('teams')
+  async findAll(): Promise<Team[]> {
+    return this.teamsService.findAll();
+  }
+
   @Post('findTeamsById')
   findTeamsById(@Body() findTeamsById: findTeamsByIdInput) {
     return this.teamsService.findTeamsById(findTeamsById);

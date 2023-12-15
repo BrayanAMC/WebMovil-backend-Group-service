@@ -56,6 +56,10 @@ export class TeamsService {
     return this.teamRepository.find({where: {idCreator: id}});
   }
 
+  async findAll(): Promise<Team[]> {
+    return this.teamRepository.find();
+  }
+  
   async findTeamsById(findTeamsById: findTeamsByIdInput): Promise<Team[]>{
     const idCreator = findTeamsById.idCreator;
     return this.teamRepository.find({
@@ -79,19 +83,28 @@ export class TeamsService {
       if (!team) {
         throw new Error('Equipo no encontrado');
       }
-    
-    const membersInfoPromises = team.idMembers.map((id) =>
-    axios.post(`${process.env.ENDPOINT_MS_AUTH}/get-user`, { id })
-  );
-  const membersInfoResponses = await Promise.all(membersInfoPromises);
-  const membersInfo = membersInfoResponses.map((res) => res.data);
 
-  return { team, membersInfo };
-} catch (error) {
-  // Manejar errores aquí
-  console.error('Error al buscar el equipo:', error.message);
-  throw new Error('Error al buscar el equipo');
-}
+     // Crear un array con el ID del miembro (puede ser un solo elemento)
+    const idMembersArray = Array.isArray(team.idMembers) ? team.idMembers : [team.idMembers];
+
+    // Realizar llamadas a la API para obtener información de los miembros
+    const membersInfoPromises = idMembersArray.map((id) =>
+      axios.get(`${process.env.ENDPOINT_MS_AUTH}/get-user/${id}`)
+    );
+
+    // Esperar a que todas las llamadas a la API se completen
+    const membersInfoResponses = await Promise.all(membersInfoPromises);
+
+    // Extraer la información de los miembros de las respuestas
+    const membersInfo = membersInfoResponses.map((res) => res.data);
+
+    // Devolver el equipo y la información de los miembros
+    return { team, membersInfo };
+  } catch (error) {
+    // Manejar errores aquí
+    console.error('Error al buscar el equipo:', error.message);
+    throw new Error('Error al buscar el equipo');
+  }
 
   }
   async updateTeam(
