@@ -11,6 +11,7 @@ export class TasksController {
   @Post('createTask')
   create(@Body() createTaskDto: CreateTaskDto) {
     try{
+      console.log("en controller antes de entrar al service");
       return this.tasksService.create(createTaskDto);
     }catch(error){
       return Promise.resolve({ success: false, message: "Error creating task" });

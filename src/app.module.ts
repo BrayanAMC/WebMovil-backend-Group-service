@@ -14,4 +14,15 @@ import config from './config/config';
   controllers: [],
   providers: [],
 })
+/*@Module({
+  imports: [
+    TypeOrmModule.forRoot(config),
+    TeamsModule,
+    ProjectsModule,
+    TasksModule],
+  controllers: [],
+  providers: [],
+})*/
+
+
 export class AppModule {}

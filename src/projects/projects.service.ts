@@ -11,13 +11,17 @@ import {
   AddTeamResponse,
 } from './entities/project.entity';
 import { TeamsService } from 'src/teams/teams.service';
+import { TasksService } from 'src/tasks/tasks.service';
+import { Task } from 'src/tasks/entities/task.entity';
 
 @Injectable()
 export class ProjectsService {
   constructor(
     @InjectRepository(Project) private projectRepository: Repository<Project>,
-
+    @InjectRepository(Task) private taskRepository: Repository<Task>,
     private readonly teamsService: TeamsService,
+    //private readonly tasksService: TasksService,
+
   ) {}
 
   async create(
@@ -32,6 +36,7 @@ export class ProjectsService {
     if (project) {
       //the team already exists
       return { success: false, message: 'Team already exists' };
+      
     }
 
     //save project in database
@@ -51,6 +56,23 @@ export class ProjectsService {
     return this.projectRepository.find({
       where: { idCreator },
     });
+  }
+
+  async addTaskToProject(idProject: number, idNewTask: number) {
+    console.log(idProject, idNewTask);
+    const project = await this.projectRepository.findOne({
+      where: { id: idProject },
+    });
+
+    if (project.idTasks.includes(idNewTask)) {
+      return { success: false, message: 'task already exists in project' };
+    }
+  
+    project.idTasks.push(idNewTask);
+    await this.projectRepository.save(project);
+    return { success: true, message: 'new task was added into project' };
+
+
   }
 
   async findProjectsByTeamId(idTeam: number): Promise<Project[]> {
@@ -76,12 +98,45 @@ export class ProjectsService {
           return team;
         }),
       );
+      const tasks = await Promise.all(
+        project.idTasks.map(async (idTask) => {
+         
+          
+          const task = await this.taskRepository.findOne({ where: { id: idTask } });
 
-      return { project, teams };
+          console.log("objeto task:::", task);
+          return task;
+        }),
+      );
+      
+      return { project, teams, tasks };
     } catch (error) {
       // Manejar errores aquí
       console.error('Error al buscar el proyecto:', error.message);
       throw new Error('Error al buscar el proyecto');
+    }
+  }
+
+  async getListOfTasks(id: number) {
+    try {
+      const project = await this.projectRepository.findOne({ where: { id } });
+
+      if (!project) {
+        throw new Error('Proyecto no encontrado');
+      }
+
+      const tasks = await Promise.all(
+        project.idTasks.map(async (idTask) => {
+          //const task = await this.tasksService.findOne(idTask);
+          //return task;
+        }),
+      );
+
+      return { tasks };
+    } catch (error) {
+      // Manejar errores aquí
+      console.error('Error al buscar el la terea:', error.message);
+      throw new Error('Error al buscar la tarea');
     }
   }
 
