@@ -5,9 +5,10 @@ import {Project} from './entities/project.entity'
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TeamsModule } from 'src/teams/teams.module';
 import { TasksModule } from 'src/tasks/tasks.module';
+import { Task } from 'src/tasks/entities/task.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Project]),TeamsModule, forwardRef(() => TasksModule)],
+  imports: [TypeOrmModule.forFeature([Project,Task]),TeamsModule, forwardRef(() => TasksModule)],
   controllers: [ProjectsController],
   providers: [ProjectsService],
   exports: [ProjectsService]

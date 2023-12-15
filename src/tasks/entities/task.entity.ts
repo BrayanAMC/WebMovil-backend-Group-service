@@ -9,11 +9,11 @@ export class Task {
     @Column()
     name: string;
     
-    @Column()
+    @Column({default: 'no description'})
     description: string;
     
     @Column()
-    idCreator: number;
+    emailCreator: string;
     
     @Column({default: null})
     idResponsible: number;
@@ -26,6 +26,8 @@ export class Task {
     
     @Column({default: null})
     endDate: Date;
+
+    
 
 }
 

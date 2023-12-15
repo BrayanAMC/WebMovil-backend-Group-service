@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task, CreateTaskResponse } from './entities/task.entity';
 import { ProjectsService } from 'src/projects/projects.service';
+import { Project } from 'src/projects/entities/project.entity';
 
 
 @Injectable()
@@ -12,15 +13,17 @@ export class TasksService {
 
   constructor(
     @InjectRepository(Task) private taskRepository: Repository<Task>,
-
+    
     private readonly projectsService: ProjectsService,
   ) { }
   
   async create(createTaskDto: CreateTaskDto): Promise<CreateTaskResponse> {
+    console.log("en service de create task");
     const name = createTaskDto.name;
-    const idCreator = createTaskDto.idCreator;
+    const emailCreator = createTaskDto.emailCreator;
+    const idProject = createTaskDto.idProject;
     const task = await this.taskRepository.findOne({
-      where: { name}
+      where: { name }
     })
 
     if (task) {//the task already exists
@@ -33,7 +36,19 @@ export class TasksService {
     )
 
     await this.taskRepository.save(newTask);
-    return { success: true, message: "Task created successfully", idTask: newTask.id };
+    //hacerle saber a la tabla de proyectos que tiene una nueva tarea
+    const newTaskId = newTask.id;
+    
+    
+    //const response = /addTaskToProject`, { idProject, newTaskId })
+    const response = await this.projectsService.addTaskToProject(idProject, newTaskId);
+    return response
+    
+    //console.log("print response de la llamada a project", response);
+    /*if((await response).success === false){
+      throw new Error("Error al agregar la tarea al proyecto")
+    } */
+    //return { success: true, message: "Task created successfully"};
   }
 
   async findAll(): Promise<Task[]> {
@@ -42,7 +57,17 @@ export class TasksService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} task`;
+    try{
+      const task = this.taskRepository.findOne({where: {id}})
+      if(!task){
+        throw new Error("tarea no encontrada");
+      }
+      return task;
+    }catch (error) {
+      // Manejar errores aquí
+      console.error('Error al buscar el equipo:', error.message);
+      throw new Error('Error al buscar el equipo');
+}
   }
 
   async updateTask(id: number, updateTaskDto: UpdateTaskDto) {
@@ -58,7 +83,9 @@ export class TasksService {
     return this.taskRepository.save(taskToUpdate);
   }
 
-
+  /*remove(id: number) {
+    return `This action removes a #${id} task`;
+  }*/
   async remove(id: number): Promise<boolean> {
     const task = await this.taskRepository.findOne({where: {id}})
     console.log(task)

@@ -2,14 +2,16 @@ export class CreateTaskDto {
 
     name: string;
 
-    description: string;
+    description?: string;
 
-    idCreator: number;
+    emailCreator: string;
 
     idResponsible?: number;
 
     startDate: Date;
 
     endDate: Date;
+
+    idProject: number;
 
 }

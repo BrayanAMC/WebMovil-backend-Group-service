@@ -9,3 +9,14 @@ export class findProjectByIdInput {
 
 
 }
+
+export class addTaskToProjectInput{
+    
+        
+    
+        @IsNotEmpty()
+        idProject: number;
+
+        @IsNotEmpty()
+        idNewTask: number;
+}
