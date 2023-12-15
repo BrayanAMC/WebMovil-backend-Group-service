@@ -95,4 +95,5 @@ export class ProjectsController {
   deleteTeam(@Body() input: removeTeamDto) {
     return this.projectsService.deleteTeam(input.idProject, input.idTeam);
   }
+  
 }

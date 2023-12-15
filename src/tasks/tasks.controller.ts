@@ -39,10 +39,10 @@ export class TasksController {
     return this.tasksService.remove(+id);
   }*/
 
-  @Post('remove-task/:id')
-  remove(@Param('id') id: number) {
-    console.log("id en remove-task:", id);
-    return this.tasksService.remove(id);
+  @Post('remove-task')
+  async remove(@Body() input: UpdateTaskDto) {
+    console.log("id en remove-task:", input);
+    return this.tasksService.remove(input.idTask, input.idProject);
 
   }
 }

@@ -14,7 +14,7 @@ export class TasksService {
   constructor(
     @InjectRepository(Task) private taskRepository: Repository<Task>,
     
-    private readonly projectsService: ProjectsService,
+    private projectsService: ProjectsService,
   ) { }
   
   async create(createTaskDto: CreateTaskDto): Promise<CreateTaskResponse> {
@@ -86,12 +86,15 @@ export class TasksService {
   /*remove(id: number) {
     return `This action removes a #${id} task`;
   }*/
-  async remove(id: number): Promise<boolean> {
-    const task = await this.taskRepository.findOne({where: {id}})
+  async remove(idTask: number, idProject: number): Promise<boolean> {
+    console.log(idTask)
+    const task = await this.taskRepository.findOne({where:  {id: idTask} });
     console.log(task)
     if(task){
       console.log("antes de eliminar task")
+      await this.projectsService.deleteTask(idProject, task.id)
       await this.taskRepository.remove(task)
+      
       return true
     }
     return false

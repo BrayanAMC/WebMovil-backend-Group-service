@@ -199,4 +199,16 @@ export class ProjectsService {
     }
     return false
   }
+  async deleteTask(idProject: number, idTask: number): Promise<boolean> {
+    const project = await this.projectRepository.findOne({where: {id: idProject}})
+    if(project){
+      const index = project.idTasks.indexOf(idTask)
+      if(index > -1){
+        project.idTasks.splice(index, 1)
+        await this.projectRepository.save(project)
+        return true
+      }
+    }
+    return false
+  }
 }
